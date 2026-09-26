@@ -17,16 +17,16 @@ app = FastAPI(
 )
 
 
-# --------------------------------------------------
+
 # Paths
-# --------------------------------------------------
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
 
-# --------------------------------------------------
+
 # Hugging Face Model
-# --------------------------------------------------
+
 
 MODEL_ID = os.getenv(
     "HF_MODEL_ID",
@@ -34,9 +34,9 @@ MODEL_ID = os.getenv(
 )
 
 
-# --------------------------------------------------
+
 # Device
-# --------------------------------------------------
+
 
 if torch.backends.mps.is_available():
     device = torch.device("mps")
@@ -50,9 +50,7 @@ print(f"Using device: {device}")
 print(f"Loading model: {MODEL_ID}")
 
 
-# --------------------------------------------------
 # Load Model
-# --------------------------------------------------
 
 tokenizer = T5Tokenizer.from_pretrained(MODEL_ID)
 
@@ -64,26 +62,20 @@ model.to(device)
 model.eval()
 
 
-# --------------------------------------------------
 # Templates
-# --------------------------------------------------
 
 templates = Jinja2Templates(
     directory=str(BASE_DIR)
 )
 
 
-# --------------------------------------------------
 # Request Model
-# --------------------------------------------------
 
 class DialogueInput(BaseModel):
     dialogue: str
 
 
-# --------------------------------------------------
 # Text Cleaning
-# --------------------------------------------------
 
 def clean_data(text: str) -> str:
 
@@ -96,9 +88,7 @@ def clean_data(text: str) -> str:
     return text
 
 
-# --------------------------------------------------
 # Summarization
-# --------------------------------------------------
 
 def summarize_dialogue(dialogue: str) -> str:
 
@@ -135,9 +125,7 @@ def summarize_dialogue(dialogue: str) -> str:
     return summary
 
 
-# --------------------------------------------------
 # API
-# --------------------------------------------------
 
 @app.post("/summarize/")
 async def summarize(dialogue_input: DialogueInput):
@@ -151,9 +139,7 @@ async def summarize(dialogue_input: DialogueInput):
     }
 
 
-# --------------------------------------------------
 # Home Page
-# --------------------------------------------------
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -165,10 +151,8 @@ async def home(request: Request):
     )
 
 
-# --------------------------------------------------
-# Health Check
-# --------------------------------------------------
 
+# Health Check
 @app.get("/health")
 async def health():
 
