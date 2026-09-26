@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+jinja2
+transformers==5.16.1
+torch
+sentencepiece
+huggingface_hub
